@@ -94,5 +94,5 @@ class Place(BaseModel, Base):
             amenity_ids
             """
             if isinstance(amenity_obj, models.Amenity):
-                if amenity_obj.place_amenity.place_id == self.id:
-                    self.amenities.append(amenity_obj.id)
+                if amenity_obj.id not in self.amenity_ids:
+                    self.amenity_ids.append(amenity_obj.id)
