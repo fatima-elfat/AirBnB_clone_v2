@@ -24,7 +24,7 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        except FileNotFoundError:
             pass
 
     def test_default(self):
@@ -38,6 +38,15 @@ class test_basemodel(unittest.TestCase):
         copy = i.to_dict()
         new = BaseModel(**copy)
         self.assertFalse(new is i)
+
+    def test_pycodestyle(self):
+        """ tests the  pep8"""
+        pycostyle = pycodestyle.StyleGuide(quiet=True)
+        p = pycostyle.check_files(['models/base_model.py'])
+        self.assertEqual(
+                p.total_errors,
+                0,
+                "Found code style errors (and warnings).")
 
     def test_kwargs_int(self):
         """ """

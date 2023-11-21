@@ -9,6 +9,7 @@ import pep8
 
 storage = getenv("HBNB_TYPE_STORAGE")
 
+
 class test_Amenity(test_basemodel):
     """ """
 
@@ -22,6 +23,8 @@ class test_Amenity(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.name), str)
+
+
 class test_Amenity_(unittest.TestCase):
     """ UNITTEST AMENIYTY"""
     @classmethod
