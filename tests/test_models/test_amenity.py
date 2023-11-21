@@ -1,7 +1,12 @@
 #!/usr/bin/python3
-""" """
+""" ALL THE TESTS"""
 from tests.test_models.test_base_model import test_basemodel
+from models.base_model import BaseModel
 from models.amenity import Amenity
+import unittest
+from os import getenv
+
+storage = getenv("HBNB_TYPE_STORAGE")
 
 class test_Amenity(test_basemodel):
     """ """
@@ -16,3 +21,43 @@ class test_Amenity(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.name), str)
+class test_Amenity_(unittest.TestCase):
+    """ UNITTEST AMENIYTY"""
+    @classmethod
+    def setUp(self):
+        """SetUp method"""
+
+        self.amenity = Amenity()
+        self.amenity.name = "GYM"
+
+    @classmethod
+    def TearDown(self):
+        """TearDown method."""
+
+        del self.amenity
+
+    def test_type_object(self):
+        """Test type object of Amenity"""
+
+        self.assertEqual(
+            str(type(self.amenity)),
+            "<class 'models.amenity.Amenity'>")
+        self.assertIsInstance(self.amenity, Amenity)
+
+    def test_Amenity_inheritence(self):
+        """checks if inherits"""
+
+        self.assertIsInstance(self.amenity, BaseModel)
+
+    def test_db_tbname(self):
+        """checks the tablename"""
+
+        self.assertEqual(self.amenity.__tablename__, "amenities")
+
+    def test_attr(self):
+        """ checks the attributes"""
+
+        self.assertTrue("name" in self.amenity.__dir__())
+        if storage == 'db':
+            name_value = getattr(self.amenity, "name")
+            self.assertIsInstance(name_value, str)
