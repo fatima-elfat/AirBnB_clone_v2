@@ -1,0 +1,1 @@
+create User email="a@a.com" password="pwd" first_name="fn" last_name="ln"
