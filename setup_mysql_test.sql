@@ -2,6 +2,8 @@
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 -- create a new user, hbnb_test
 CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
+-- or use the following to create a user and give it no privilege
+-- GRANT USAGE ON * . * TO 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
 -- grant all privileges of hbnb_test_db to new user(hbnb_test)
 GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
 GRANT USAGE ON *.* TO 'hbnb_test'@'localhost';
