@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """This is the place class"""
 from sqlalchemy import Table, Column, Integer
-from sqlalchemy import Float, String, ForeignKey, MetaData
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Float, String, ForeignKey
+from sqlalchemy.orm import relationship
 import models
 from models.base_model import BaseModel, Base
 from os import environ
@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
         amenities = relationship("Amenity",
                                  secondary=place_amenity,
                                  viewonly=False,
-                                 backref='place_amenities')
+                                 back_populates="place_amenities")
 
     else:
         @property
