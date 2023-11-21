@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from models.amenity import Amenity
 import unittest
 from os import getenv
+import pep8
 
 storage = getenv("HBNB_TYPE_STORAGE")
 
@@ -35,6 +36,13 @@ class test_Amenity_(unittest.TestCase):
         """TearDown method."""
 
         del self.amenity
+
+    def test_pep8_style_check(self):
+        """Test pep8"""
+
+        style = pep8.StyleGuide(quiet=True)
+        s = style.check_files(['models/amenity.py'])
+        self.assertEqual(s.total_errors, 0, "pep8 error needs fixing")
 
     def test_type_object(self):
         """Test type object of Amenity"""
