@@ -47,7 +47,7 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
-
+    amenity_ids = []
     if environ.get('HBNB_TYPE_STORAGE') == "db":
         reviews = relationship("Review",
                                backref="place",
@@ -94,4 +94,5 @@ class Place(BaseModel, Base):
             amenity_ids
             """
             if isinstance(amenity_obj, models.Amenity):
-                self.amenities.append(amenity_obj.id)
+                if amenity_obj.place_amenity.place_id == self.id:
+                    self.amenities.append(amenity_obj.id)
