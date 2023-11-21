@@ -6,6 +6,8 @@ from sqlalchemy.orm import relationship
 import models
 from models.base_model import BaseModel, Base
 from os import environ
+from models.amenity import Amenity
+from models.review import Review
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id',
@@ -54,7 +56,8 @@ class Place(BaseModel, Base):
                                cascade="all, delete, delete-orphan")
         amenities = relationship("Amenity",
                                  secondary=place_amenity,
-                                 viewonly=False)
+                                 viewonly=False,
+                                 back_populates="place_amenities")
 
     else:
         @property
