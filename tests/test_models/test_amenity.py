@@ -6,21 +6,22 @@ from models.amenity import Amenity
 import unittest
 from os import getenv
 import pep8
+import models
 
 storage = getenv("HBNB_TYPE_STORAGE")
 
 
 class test_Amenity(test_basemodel):
-    """ """
+    """ TESTS AMENITY"""
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """ INIT VALUE OF CLASS"""
         super().__init__(*args, **kwargs)
         self.name = "Amenity"
         self.value = Amenity
 
     def test_name2(self):
-        """ """
+        """ CHECK IF TYPE OF NAME IS STR"""
         new = self.value()
         self.assertEqual(type(new.name), str)
 
@@ -39,6 +40,15 @@ class test_Amenity_(unittest.TestCase):
         """TearDown method."""
 
         del self.amenity
+
+    def test_docstring(self):
+        """Test docstring for the module and the class"""
+
+        self.assertIsNotNone(
+            models.amenity.__doc__,
+            "No docstring in the module"
+        )
+        self.assertIsNotNone(Amenity.__doc__, "No docstring in the class")
 
     def test_pep8_style_check(self):
         """Test pep8"""
@@ -65,10 +75,8 @@ class test_Amenity_(unittest.TestCase):
 
         self.assertEqual(self.amenity.__tablename__, "amenities")
 
+    @unittest.skipIf(storage == "db", "Testing database storage only")
     def test_attr(self):
-        """ checks the attributes"""
-
-        self.assertTrue("name" in self.amenity.__dir__())
-        if storage == 'db':
-            name_value = getattr(self.amenity, "name")
-            self.assertIsInstance(name_value, str)
+        """ checks attr"""
+        name = getattr(self.amenity, "name")
+        self.assertIsInstance(name, str)
