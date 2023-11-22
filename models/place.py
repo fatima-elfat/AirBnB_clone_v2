@@ -79,9 +79,9 @@ class Place(BaseModel, Base):
             attribute amenity_ids that contains all Amenity.id
             linked to the Place
             """
-            """all_amenities = models.storage.all(Amenity)"""
+            all_amenities = models.storage.all(Amenity)
             place_amenities = []
-            for amenity_ins in list(models.storage.all(Amenity).values()):
+            for amenity_ins in all_amenities:
                 if amenity_ins.id in self.amenity_ids:
                     place_amenities.append(amenity_ins)
             return place_amenities

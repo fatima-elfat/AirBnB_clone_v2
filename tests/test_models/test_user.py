@@ -7,8 +7,7 @@ import unittest
 from os import getenv
 import pep8
 import models
-
-storage = getenv("HBNB_TYPE_STORAGE")
+from models.engine.db_storage import DBStorage
 
 
 class test_User_(unittest.TestCase):
@@ -63,7 +62,9 @@ class test_User_(unittest.TestCase):
 
         self.assertEqual(self.user.__tablename__, "users")
 
-    @unittest.skipIf(storage == "db", "Testing database storage only")
+    @unittest.skipIf(
+        type(models.storage) == DBStorage,
+        "Testing database storage only")
     def test_attr(self):
         """ """
         email = getattr(self.user, "email")
