@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
         amenities = relationship("Amenity",
                                  secondary=place_amenity,
                                  viewonly=False,
-                                 backref="place_amenities")
+                                 back_populates="place_amenities")
 
     else:
         @property
@@ -93,6 +93,5 @@ class Place(BaseModel, Base):
             amenity_ids
             """
             if type(amenity_obj) is Amenity:
-                """if amenity_obj.id not in self.amenity_ids:
-                    """
-                self.amenity_ids.append(amenity_obj.id)
+                if amenity_obj.id not in self.amenity_ids:
+                    self.amenity_ids.append(amenity_obj.id)
