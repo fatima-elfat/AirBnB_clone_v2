@@ -85,3 +85,13 @@ class Place(BaseModel, Base):
                     place_amenities.append(amenity_ins)
             """
             return self.amenity_ids
+
+        @amenities.setter
+        def amenities(self, amenity_obj):
+            """
+            Handles append method for adding an Amenity.id to the attribute
+            amenity_ids
+            """
+            if type(amenity_obj) == models.Amenity):
+                if amenity_obj.id not in self.amenity_ids:
+                    self.amenity_ids.append(amenity_obj.id)
