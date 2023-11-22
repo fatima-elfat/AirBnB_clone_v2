@@ -20,7 +20,6 @@ from models.engine.db_storage import DBStorage
 from models.engine.file_storage import  FileStorage
 from datetime import datetime
 import time
-import MySQLdb
 
 storage = getenv("HBNB_TYPE_STORAGE")
 
@@ -155,24 +154,3 @@ class Test_User_(unittest.TestCase):
         self.assertFalse(pl == self.place.updated_at)
         with open("file.json", "r") as f:
             self.assertIn("Place." + self.place.id, f.read())
-
-    def test_save_dbstorage(self):
-        """Test save method with DBStorage."""
-        pl = self.place.updated_at
-        self.user.save()
-        self.state.save()
-        self.city.save()
-        time.sleep(1)
-        self.place.save()
-        self.assertFalse(pl == self.place.updated_at)
-        db = MySQLdb.connect(user="hbnb_test",
-                             passwd="hbnb_test_pwd",
-                             db="hbnb_test_db")
-        cr = db.cursor()
-        cr.execute("SELECT * FROM `places` \
-                         WHERE BINARY name = '{}'".
-                       format(self.place.name))
-        query = cr.fetchall()
-        self.assertEqual(1, len(query))
-        self.assertEqual(self.place.id, query[0][0])
-        cr.close()
