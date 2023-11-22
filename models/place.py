@@ -92,6 +92,6 @@ class Place(BaseModel, Base):
             Handles append method for adding an Amenity.id to the attribute
             amenity_ids
             """
-            if type(amenity_obj) == models.Amenity:
+            if type(amenity_obj) == Amenity:
                 if amenity_obj.id not in self.amenity_ids:
                     self.amenity_ids.append(amenity_obj.id)
