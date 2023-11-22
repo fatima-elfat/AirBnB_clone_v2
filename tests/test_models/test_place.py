@@ -20,6 +20,8 @@ from models.engine.db_storage import DBStorage
 from models.engine.file_storage import FileStorage
 from datetime import datetime
 import time
+from sqlalchemy.exc import OperationalError
+import MySQLdb
 
 storage = getenv("HBNB_TYPE_STORAGE")
 
@@ -49,11 +51,11 @@ class Test_User_(unittest.TestCase):
             pass
         FileStorage._FileStorage__objects = {}
         self.fs = FileStorage()
-        """if type(models.storage) == DBStorage:
+        if type(models.storage) == DBStorage:
             self.dbs = DBStorage()
             Base.metadata.create_all(self.dbs._DBStorage__engine)
             Session = sessionmaker(bind=self.dbs._DBStorage__engine)
-            self.dbs._DBStorage__session = Session()"""
+            self.dbs._DBStorage__session = Session()
 
     @classmethod
     def TearDown(self):
@@ -74,9 +76,9 @@ class Test_User_(unittest.TestCase):
         del self.amenity
         del self.review
         del self.fs
-        """if type(models.storage) == DBStorage:
+        if type(models.storage) == DBStorage:
             self.dbs._DBStorage__session.close()
-            del self.dbs"""
+            del self.dbs
 
     def test_docstring(self):
         """Test docstring for the module and the class"""
@@ -154,3 +156,37 @@ class Test_User_(unittest.TestCase):
         self.assertFalse(pl == self.place.updated_at)
         with open("file.json", "r") as f:
             self.assertIn("Place." + self.place.id, f.read())
+
+    @unittest.skipIf(
+        type(models.storage) == FileStorage,
+        "Testing file storage only")
+    def test_add_pl(self):
+        """check add ."""
+        with self.assertRaises(OperationalError):
+            self.dbstorage._DBStorage__session.add(Place(user_id=self.user.id,
+                                                         name="Res"))
+            self.dbstorage._DBStorage__session.commit()
+
+    @unittest.skipIf(
+        type(models.storage) == FileStorage,
+        "Testing file storage only")
+    def test_save_dbstorage(self):
+        """checks ."""
+        pl = self.place.updated_at
+        time.sleep(1)
+        self.state.save()
+        self.city.save()
+        self.user.save()
+        self.place.save()
+        self.assertFalse(pl == self.place.updated_at)
+        db = MySQLdb.connect(user="hbnb_test",
+                             passwd="hbnb_test_pwd",
+                             db="hbnb_test_db")
+        cr = db.cursor()
+        cr.execute("SELECT * FROM `places` \
+                         WHERE BINARY city_id = '{}'".
+                       format(self.place.city_id))
+        query = cr.fetchall()
+        self.assertEqual(1, len(query))
+        self.assertEqual(self.place.id, query[0][0])
+        cr.close()
