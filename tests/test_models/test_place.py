@@ -49,11 +49,11 @@ class Test_User_(unittest.TestCase):
             pass
         FileStorage._FileStorage__objects = {}
         self.fs = FileStorage()
-        if type(models.storage) == DBStorage:
+        """if type(models.storage) == DBStorage:
             self.dbs = DBStorage()
             Base.metadata.create_all(self.dbs._DBStorage__engine)
             Session = sessionmaker(bind=self.dbs._DBStorage__engine)
-            self.dbs._DBStorage__session = Session()
+            self.dbs._DBStorage__session = Session()"""
 
     @classmethod
     def TearDown(self):
@@ -74,9 +74,9 @@ class Test_User_(unittest.TestCase):
         del self.amenity
         del self.review
         del self.fs
-        if type(models.storage) == DBStorage:
+        """if type(models.storage) == DBStorage:
             self.dbs._DBStorage__session.close()
-            del self.dbs
+            del self.dbs"""
 
     def test_docstring(self):
         """Test docstring for the module and the class"""
