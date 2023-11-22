@@ -114,7 +114,6 @@ class test_basemodel(unittest.TestCase):
             new = self.value(**n)
         except KeyError:
             pass
-            
 
     def test_id(self):
         """TEST id"""
