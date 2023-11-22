@@ -127,6 +127,10 @@ class Test_User_(unittest.TestCase):
         self.assertTrue("amenities" in self.new_place.__dir__())
         self.assertTrue("reviews" in self.new_place.__dir__())
 
+    def test_init(self):
+        """checks init."""
+        self.assertIsInstance(self.place, Place)
+
     def test_attributes(self):
         """Check for attributes."""
         pl = Place()
@@ -166,12 +170,12 @@ class Test_User_(unittest.TestCase):
             self.dbstorage._DBStorage__session.add(Place(user_id=self.user.id,
                                                          name="Res"))
             self.dbstorage._DBStorage__session.commit()
-"""
+
     @unittest.skipIf(
         type(models.storage) == FileStorage,
         "Testing file storage only")
     def test_save_dbs(self):
-        '''checks .'''
+        """checks ."""
         pl = self.place.updated_at
         time.sleep(1)
         self.state.save()
@@ -189,4 +193,4 @@ class Test_User_(unittest.TestCase):
         query = cr.fetchall()
         self.assertEqual(1, len(query))
         self.assertEqual(self.place.id, query[0][0])
-        cr.close()"""
+        cr.close()
