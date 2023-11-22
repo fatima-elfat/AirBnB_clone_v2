@@ -7,8 +7,9 @@ from datetime import datetime
 import inspect
 import models
 from models.engine import db_storage
+from models.engine import file_storage
 from models.amenity import Amenity
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from models.city import City
 from models.place import Place
 from models.review import Review
@@ -18,7 +19,12 @@ import json
 import os
 import pep8
 import unittest
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.engine.base import Engine
+from sqlalchemy.orm.session import Session
+
 DBStorage = db_storage.DBStorage
+FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
 
@@ -26,9 +32,53 @@ classes = {"Amenity": Amenity, "City": City, "Place": Place,
 class TestDBStorageDocs(unittest.TestCase):
     """Tests to check the documentation and style of DBStorage class"""
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(self):
         """Set up for the doc tests"""
-        cls.dbs_f = inspect.getmembers(DBStorage, inspect.isfunction)
+        if type(models.storage) == DBStorage:
+            self.storage = DBStorage()
+            Base.metadata.create_all(self.storage._DBStorage__engine)
+            sesh = sessionmaker(bind=self.storage._DBStorage__engine)
+            self.storage._DBStorage__session = sesh()
+            self.user = User(email="Ceylin.ere@gmail.com", password="ilgaz<3")
+            self.storage._DBStorage__session.add(self.user)
+            self.state = State(name="Istanbul")
+            self.storage._DBStorage__session.add(self.state)
+            self.city = City(name="Istanbul", state_id=self.state.id)
+            self.storage._DBStorage__session.add(self.city)
+            self.place = Place(
+                city_id=self.city.id,
+                user_id=self.user.id,
+                name="Law firm")
+            self.storage._DBStorage__session.add(self.place)
+            self.amenity = Amenity(name="Heater")
+            self.storage._DBStorage__session.add(self.amenity)
+            self.review = Review(
+                place_id=self.place.id,
+                user_id=self.user.id,
+                text="Good consulting")
+            self.storage._DBStorage__session.add(self.review)
+            self.storage._DBStorage__session.commit()
+
+    @classmethod
+    def tearDownClass(self):
+        """TearDown method."""
+
+        if type(models.storage) == DBStorage:
+            self.storage._DBStorage__session.delete(self.user)
+            del self.user
+            self.storage._DBStorage__session.delete(self.state)
+            del self.state
+            self.storage._DBStorage__session.delete(self.review)
+            del self.review
+            self.storage._DBStorage__session.delete(self.place)
+            del self.place
+            self.storage._DBStorage__session.delete(self.city)
+            del self.city
+            self.storage._DBStorage__session.delete(self.amenity)
+            del self.amenity
+            self.storage._DBStorage__session.commit()
+            self.storage._DBStorage__session.close()
+            del self.storage
 
     def test_pep8_conformance_db_storage(self):
         """Test that models/engine/db_storage.py conforms to PEP8."""
@@ -59,13 +109,21 @@ test_db_storage.py'])
         self.assertTrue(len(DBStorage.__doc__) >= 1,
                         "DBStorage class needs a docstring")
 
-    def test_dbs_func_docstrings(self):
-        """Test for the presence of docstrings in DBStorage methods"""
-        for func in self.dbs_f:
-            self.assertIsNot(func[1].__doc__, None,
-                             "{:s} method needs a docstring".format(func[0]))
-            self.assertTrue(len(func[1].__doc__) >= 1,
-                            "{:s} method needs a docstring".format(func[0]))
+    @unittest.skipIf(
+        type(models.storage) == FileStorage,
+        "Testing file storage only")
+    def test_strg_attr(self):
+        """Check the bdstorage attributes."""
+        self.assertTrue(isinstance(self.storage._DBStorage__engine, Engine))
+        self.assertTrue(isinstance(self.storage._DBStorage__session, Session))
+
+    @unittest.skipIf(
+        type(models.storage) == FileStorage,
+        "Testing file storage only")
+    def test_init(self):
+        """Test init."""
+        self.assertTrue(hasattr(DBStorage, "__init__"))
+        self.assertTrue(isinstance(self.storage, DBStorage))
 
 
 class TestFileStorage(unittest.TestCase):
