@@ -84,7 +84,6 @@ class Place(BaseModel, Base):
             for amenity_ins in all_amenities.values():
                 if amenity_ins.place_id in self.amenity_ids:
                     place_amenities.append(amenity_ins)
-            
             return place_amenities
 
         @amenities.setter
