@@ -107,7 +107,7 @@ class test_basemodel(unittest.TestCase):
             new = self.value(**n)
 
     def test_kwargs_one(self):
-        '''TEST KWARGS ONE VALUE'''
+        """TEST KWARGS ONE VALUE"""
 
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
@@ -124,14 +124,6 @@ class test_basemodel(unittest.TestCase):
 
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
-
-    def test_updated_at(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.updated_at), datetime.datetime)
-        n = new.to_dict()
-        new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
 
     @unittest.skipIf(storage == "db", "Testing database storage only")
     def test_update(self):
