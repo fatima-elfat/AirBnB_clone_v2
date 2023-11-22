@@ -33,6 +33,12 @@ class Test_User_(unittest.TestCase):
     def setUp(self):
         """SetUp method"""
 
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+        FileStorage._FileStorage__objects = {}
+        self.fs = FileStorage()
         self.user = User(email="Ceylin.ere@gmail.com", password="ilgaz<3")
         self.state = State(name="Istanbul")
         self.city = City(name="Istanbul", state_id=self.state.id)
@@ -45,12 +51,6 @@ class Test_User_(unittest.TestCase):
             place_id=self.place.id,
             user_id=self.user.id,
             text="Good consulting")
-        try:
-            os.rename("file.json", "tmp")
-        except IOError:
-            pass
-        FileStorage._FileStorage__objects = {}
-        self.fs = FileStorage()
         if type(models.storage) == DBStorage:
             self.dbs = DBStorage()
             Base.metadata.create_all(self.dbs._DBStorage__engine)
