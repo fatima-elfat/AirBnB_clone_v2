@@ -17,6 +17,9 @@ class test_Review_(unittest.TestCase):
         """SetUp method"""
 
         self.review = Review()
+        self.review.user_id = "E4ZA"
+        self.review.place_id = "R1475"
+        self.review.text = "The consulktation was very helpful."
 
     @classmethod
     def TearDown(self):

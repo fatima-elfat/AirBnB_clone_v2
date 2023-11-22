@@ -71,5 +71,5 @@ class Test_User_(unittest.TestCase):
         type(models.storage) == DBStorage,
         "Testing database storage only")
     def test_place_amenity_dbattrb(self):
-        self.assertTrue("amenities" in self.new_place.__dir__())
-        self.assertTrue("reviews" in self.new_place.__dir__())
+        self.assertTrue("amenities" in self.place.__dir__())
+        self.assertTrue("reviews" in self.place.__dir__())
