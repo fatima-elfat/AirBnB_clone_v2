@@ -70,8 +70,6 @@ def do_clean(number=0):
     if number == 0:
         number = 1
     with lcd('./versions/'):
-        local("ls -lv | rev | cut -f 1 | rev | \
-            head -n +{} | xargs -d '\n' rm -rf".format(number))
+        local("sudo ls -t | tail -n +{} | xargs rm -rf".format(number))
     with cd('/data/web_static/releases/'):
-        run("sudo ls -lv | rev | cut -f 1 | \
-            rev | head -n +{} | xargs -d '\n' rm -rf".format(number))
+        run("sudo ls -t | tail -n +{} | xargs rm -rf".format(number))
