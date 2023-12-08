@@ -15,9 +15,10 @@ def do_deploy(archive_path):
     """
     if os.path.isfile(archive_path) is False:
         return False
-    filenme = archive_path.split("/")[-1]
-    nme = filenme.split(".")[0]
+    
     try:
+        filenme = archive_path.split("/")[-1]
+        nme = filenme.split(".")[0]
         path_r = "/data/web_static/releases/{}/".format(nme)
         path_c = "/data/web_static/current"
         """put(archive_path, "/tmp/{}".format(filenme))"""
