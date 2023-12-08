@@ -1,5 +1,18 @@
 #config
 include 'stdlib'
+$hbnb_static = "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By ${hostname};
+    root   /var/www/html;
+    index  index.html index.htm;
+
+    location /hbnb_static {
+        alias /data/web_static/current;
+        index index.html index.htm;
+    }
+}"
+
 
 package { 'nginx':
   ensure   => 'present',
@@ -53,12 +66,10 @@ file { '/var/www/html/index.html':
   content => "Holberton School\n"
 } ->
 
-file_line { 'redirect':
-  ensure => 'present',
-  path   => '/etc/nginx/sites-available/default',
-  after  => 'listen 80 default_server;',
-  line   => "\\\tlocation /hbnb_static {\n\t\t alias /data/web_static/current;\n\t}\n",
-}
+file { '/etc/nginx/sites-available/default':
+  ensure  => 'present',
+  content => $hbnb_static
+} ->
 
 exec { 'nginx restart':
   path => '/etc/init.d/'
