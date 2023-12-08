@@ -10,4 +10,4 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data
 hbnb_static="\\\tlocation \/hbnb_static {\n\t\t alias /data/web_static/current;\n\t}\n"
 sudo sed -i "35i $hbnb_static" /etc/nginx/sites-available/default
-service nginx restart
+sudo service nginx restart
