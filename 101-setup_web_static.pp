@@ -37,7 +37,7 @@ file { '/data/web_static/releases/test':
 
 file { '/data/web_static/releases/test/index.html':
   ensure  => 'present',
-  content => "Holberton School\n"
+  content => "Holberton School Puppet\n"
 } ->
 
 file { '/data/web_static/shared':
@@ -63,7 +63,7 @@ file { '/var/www/html':
 
 file { '/var/www/html/index.html':
   ensure  => 'present',
-  content => "Holberton School\n"
+  content => "Holberton School Nginx\n"
 } ->
 
 file { '/etc/nginx/sites-available/default':
