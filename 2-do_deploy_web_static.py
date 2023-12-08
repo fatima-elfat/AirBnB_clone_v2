@@ -15,7 +15,6 @@ def do_deploy(archive_path):
     """
     if os.path.isfile(archive_path) is False:
         return False
-    
     try:
         filenme = archive_path.split("/")[-1]
         nme = filenme.split(".")[0]
@@ -29,7 +28,7 @@ def do_deploy(archive_path):
         run("mv {}web_static/* {}".format(path_r, path_r))
         run("rm -rf {}web_static".format(path_r))
         run("rm -rf {}".format(path_c))
-        run("ln -s {} {}".format(path_r, path_c))
+        run("ln -s {}/{}/ {}".format(path_r, nme, path_c))
         return True
     except Exception:
         return False
