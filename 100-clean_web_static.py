@@ -23,6 +23,7 @@ def do_pack():
     except Exception:
         return None
 
+
 def do_deploy(arch):
     """
     do_deploy archive
@@ -57,6 +58,7 @@ def deploy():
     r = do_deploy(arch)
     return r
 
+
 def do_clean(number=0):
     """
     deletes out-of-date archives, using the function do_clean
@@ -65,10 +67,14 @@ def do_clean(number=0):
         number (int, optional): the number of the archives.
             Defaults to 0.
     """
-    number = 1 if int(number) == 0 else int(number)
-    with cd('/data/web_static/releases/'):
-            run("ls -lt | tail -n +{} | rev | cut -f1 -d" " | \
-                rev | xargs -d '\n' rm".format(1 + number))
-    with cd.local('./versions'):
-            local("ls -lt | tail -n +{} | rev | cut -f1 -d" " | \
-                rev | xargs -d '\n' rm".format(1 + number))
+    if number == 0:
+        number = 1 
+    arch_l = sorted(os.listdir("versions"))
+    [arch_l.pop() for i in range(number)]
+    with lcd("versions"):
+        [local("rm ./{}".format(a)) for a in arch_l]
+    with cd("/data/web_static/releases"):
+        arch_l = run("ls -tr").split()
+        arch_l = [a for a in arch_l if "web_static_" in a]
+        [arch_l.pop() for i in range(number)]
+        [run("rm -rf ./{}".format(a)) for a in arch_l]
