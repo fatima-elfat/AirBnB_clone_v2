@@ -1,4 +1,6 @@
 #config
+include 'stdlib'
+
 package { 'nginx':
   ensure   => 'present',
   provider => 'apt'
@@ -34,9 +36,8 @@ file { '/data/web_static/current':
   target => '/data/web_static/releases/test'
 } ->
 
-# ownership
 exec { 'chown -R ubuntu:ubuntu /data/':
-  path => '/usr/bin/:/usr/local/bin/:/bin/'
+  path => '/bin/:/usr/bin/:/usr/local/bin/'
 }
 
 file { '/var/www':
@@ -56,9 +57,9 @@ file_line { 'redirect':
   ensure => 'present',
   path   => '/etc/nginx/sites-available/default',
   after  => 'listen 80 default_server;',
-  line   => "\\\tlocation \/hbnb_static {\n\t\t alias /data/web_static/current;\n\t}\n",
+  line   => "\\\tlocation /hbnb_static {\n\t\t alias /data/web_static/current;\n\t}\n",
 }
 
-exec { 'restart':
+exec { 'nginx restart':
   path => '/etc/init.d/'
 }
