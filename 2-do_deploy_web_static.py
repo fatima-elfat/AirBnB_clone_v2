@@ -20,15 +20,16 @@ def do_deploy(archive_path):
         nme = filenme.split(".")[0]
         path_r = "/data/web_static/releases/{}/".format(nme)
         path_c = "/data/web_static/current"
-        """put(archive_path, "/tmp/{}".format(filenme))"""
-        put(archive_path, "/tmp/")
+        if put(archive_path, "/tmp/{}".format(filenme)).failed is True:
+            return False
+        """put(archive_path, "/tmp/")"""
         run("mkdir -p {}".format(path_r))
         run("tar -xzf /tmp/{} -C {}".format(filenme, path_r))
         run("rm /tmp/{}".format(filenme))
         run("mv {}web_static/* {}".format(path_r, path_r))
         run("rm -rf {}web_static".format(path_r))
         run("rm -rf {}".format(path_c))
-        run("ln -s {}/{}/ {}".format(path_r, nme, path_c))
+        run("ln -s {} {}".format(path_r, path_c))
         return True
     except Exception:
         return False
