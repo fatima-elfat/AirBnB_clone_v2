@@ -7,12 +7,13 @@ from fabric.api import env, put, run, local
 import os.path
 from time import strftime
 
+env.user = "ubuntu"
 env.hosts = ["52.86.154.130", "34.207.120.70"]
 
 
 def do_pack():
     """
-    do_pack generates folder
+    generates .tgz archive folder
     """
     try:
         local("mkdir -p versions")
@@ -24,18 +25,19 @@ def do_pack():
         return None
 
 
-def do_deploy(arch):
+def do_deploy(archive_path):
     """
-    do_deploy archive
+    distributes an archive to your web servers
     """
-    if os.path.isfile(arch) is False:
+    if os.path.isfile(archive_path) is False:
         return False
-    filenme = arch.split("/")[-1]
-    nme = filenme.split(".")[0]
     try:
+        filenme = archive_path.split("/")[-1]
+        nme = filenme.split(".")[0]
         path_r = "/data/web_static/releases/{}/".format(nme)
         path_c = "/data/web_static/current"
-        put(arch, "/tmp/{}".format(filenme))
+        put(archive_path, "/tmp/{}".format(filenme))
+        """put(archive_path, "/tmp/")"""
         run("mkdir -p {}".format(path_r))
         run("tar -xzf /tmp/{} -C {}".format(filenme, path_r))
         run("rm /tmp/{}".format(filenme))
