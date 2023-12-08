@@ -68,13 +68,10 @@ def do_clean(number=0):
             Defaults to 0.
     """
     if number == 0:
-        number = 1 
-    arch_l = sorted(os.listdir("versions"))
-    [arch_l.pop() for i in range(number)]
-    with lcd("versions"):
-        [local("rm ./{}".format(a)) for a in arch_l]
-    with cd("/data/web_static/releases"):
-        arch_l = run("ls -tr").split()
-        arch_l = [a for a in arch_l if "web_static_" in a]
-        [arch_l.pop() for i in range(number)]
-        [run("rm -rf ./{}".format(a)) for a in arch_l]
+        number = 1
+    with lcd('./versions/'):
+        local("ls -lv | rev | cut -f 1 | rev | \
+            head -n +{} | xargs -d '\n' rm -rf".format(number))
+    with cd('/data/web_static/releases/'):
+        run("sudo ls -lv | rev | cut -f 1 | \
+            rev | head -n +{} | xargs -d '\n' rm -rf".format(number))
