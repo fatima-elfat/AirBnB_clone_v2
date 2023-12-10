@@ -7,7 +7,6 @@ from fabric.api import env, put, run, local
 import os.path
 from time import strftime
 
-env.user = "ubuntu"
 env.hosts = ["52.86.154.130", "34.207.120.70"]
 
 
