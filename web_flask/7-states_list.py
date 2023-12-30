@@ -14,8 +14,8 @@ def states_list():
     """
     display a HTML page.
     """
-    st = storage.all(State)
-    return flask.render_template('7-states_list.html', states=st)
+    st = storage.all("State")
+    return render_template('7-states_list.html', states=st)
 
 
 @app.teardown_appcontext
