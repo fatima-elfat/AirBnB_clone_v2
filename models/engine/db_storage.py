@@ -41,14 +41,14 @@ class DBStorage:
         if cls is True:
             if type(cls) is str:
                 cls = eval(cls)
-            query = self.__session.query(cls)
+            query = self.__session.query(cls).all()
             for obj in query:
                 key = "{}.{}".format(type(obj).__name__, obj.id)
                 storage_dict[key] = obj
         else:
             classes = [User, State, City, Amenity, Place, Review]
             for all_class in classes:
-                query = self.__session.query(all_class)
+                query = self.__session.query(all_class).all()
                 for obj in query:
                     key = "{}.{}".format(type(obj).__name__, obj.id)
                     storage_dict[key] = obj
