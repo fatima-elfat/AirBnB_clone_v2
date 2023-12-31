@@ -7,6 +7,8 @@ from flask import render_template
 from models import storage
 
 app = Flask(__name__)
+app.jinja_env.trim_blocks = True
+app.jinja_env.lstrip_blocks = True
 
 
 @app.route("/cities_by_states/", strict_slashes=False)
