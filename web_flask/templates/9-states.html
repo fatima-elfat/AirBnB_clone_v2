@@ -5,6 +5,15 @@
     </HEAD>
     <BODY>
     {% if not is_id %}
-          <H1>Not found!</H1>
+         <H1>Not found!</H1>
+    {% else %}
+        {% if id_ == None %}
+             <H1>States</H1>
+             <UL>
+	    {% for state in states.values() | sort(attribute="name") %}
+	      <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
+	    {% endfor %}
+            </UL>
+    {% endif %} 
     </BODY>
 </HTML>
