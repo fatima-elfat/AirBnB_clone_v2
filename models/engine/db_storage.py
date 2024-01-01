@@ -38,7 +38,7 @@ class DBStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         storage_dict = {}
-        if cls is True:
+        if cls:
             if type(cls) is str:
                 cls = eval(cls)
             query = self.__session.query(cls).all()
